@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+</head>
+<body>
+<input type="text" id="uname" placeholder="用户名" />
+<input type="text" id="upw" placeholder="密码" />
+<input type="button" id="login" value="登录" />
+<input type="button" id="register" value="注册" />
+<input type="button" id="rember" value="记住密码" />
+<script type="text/javascript">
+   var login = document.getElementById('login');
+   var register = document.getElementById('register');
+   var rember = document.getElementById('rember');
+   var getUname = document.getElementById('uname');
+   var getUpw = document.getElementById('upw');
+
+   register.onclick = function () {
+
+   };
+   //Cookie 存储过程
+    document.cookie = 'name=div';
+    document.cookie = 'password=1234567890';
+  //Cookie 读取
+    var data = document.cookie;
+    console.log(data);
+    console.log(typeof data);
+    console.log(Object.prototype.toString.call(data));
+    console.log(data);
+    //key=value
+    data=data.split(';');
+    console.log(data);
+    for (var index = 0;index <data.length;index++) {
+        var msg = data[index].split('=');
+        console.log(msg);
+        console.log(msg[0],":",msg[1]);
+    }
+    //设置带时间效应的Cookie
+   //设置日期
+    var times = new Date();
+    console.log(times);
+    times.setDate(times.getDate()+1);
+   console.log(times);
+   //设置时间
+//    var tim = new Date();
+//   tim.setHours(tim.getHours()+1);
+//    console.log(tim);
+    document.cookie = 'userdata=div;expires='+times;
+    //函数封装
+    //setCookie(key,value,expires)
+    //getCookie(key)
+    function getCookie(key) {
+        //1.分割cookie
+        var cookieString = document.cookie;
+        //';'分号+空格分割
+        cookieString = cookieString.split('; ');
+        //对分割后的cookie 2次分割
+        for(var index = 0;index < cookieString.length;index++) {
+            var item = cookieString[index].split('=');
+            if (item[0] == key) {
+                return item[1];
+            }else {
+                return null;
+            }
+        }
+    }
+    function setCookie(key,value,exp) {
+        var Days = 30;
+        var exps = new Date();
+        exps.setTime(exps.getTime()+Days*24*60*60*1000);
+        document.cookie = key +'='+ value+';expires='+exps.toGMTString();
+
+    }
+    function deleteCookie(key) {
+       var exps = new Date();
+       exps.setTime(exps.getTime()-1);
+       var getValue = getCookie(key);
+       if (getValue) {
+           document.cookie = key +'='+ getValue+';expires='+exps.toGMTString();
+       }
+    }
+    var getKey = getCookie('name');
+    console.log(getKey);
+   rember.onclick = function () {
+         document.cookie = 'RM=true';
+         //将用户名保存到 cookie
+
+   };
+   login.onclick = function () {
+       if (getUname.value.length <= 10) return;
+       if (getUpw.value.length <= 6) return;
+//       要先确定用户名和密码是否正确的前提
+       var url = 'http://127.0.0.1:9999/login';
+       var xhr = new XMLHttpRequest();
+       xhr.open('POST',url);
+
+       xhr.onreadystatechange = function () {
+         if (4 == this.readyState) {
+             if (200 == this.status) {
+                 //如果是密码账户都正确的情况下
+                 //要根据用户所记录的是否要保存用户来判断
+                 var rem = getCookie('RM');
+                 console.log('******');
+                 console.log(rem);
+                 console.log(typeof rem);
+                 console.log(Object.prototype.toString.call(rem));
+                 if (rem == 'true') {
+                      document.cookie = 'uname='+getUname.value;
+                      document.cookie = 'upw='+getUpw.value;
+
+                 }
+                 else {
+                     alert('没有点击remember!')
+                 }
+
+             }
+         }
+       };
+       xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+       xhr.send('name='+getUname.value+'&upw='+getUpw.value);
+
+   };
+   //首先要获取当前用户是否是第一次登录
+   //null 表示是第一次 true表示不是第一次
+    //firstLogin
+    var first = getCookie('firstLogin');
+    //true表示用户是第一次登录
+    if (first  == null) {//第一次登录的时候,first的值为null
+         document.cookie='firstLogin=true';
+    }else if (first){
+     //用户不是第一次登录
+//        document.cookie('firstLogin=false');
+        //就需要做初始化工作
+    }
+    //判断用户是否点击 记住用户的功能
+    var remberMe = getCookie('RM');
+    if (remberMe == null) {
+        //清空一下 用户名的值
+        getUname.value ='';
+    }else {
+        //不为空
+        //首先要获取当前保存的用户名
+        var getN = getCookie('uname');
+        getUname.value = getN;
+        //设置remember的按钮为选中状态
+
+    }
+</script>
+</body>
+</html>

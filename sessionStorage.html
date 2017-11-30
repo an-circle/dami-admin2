@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML5 session存储</title>
+</head>
+<body>
+<input type="button" onclick="next()">
+<script type="text/javascript">
+    /*
+    * 1.setItem(key,value)
+    * 2.getItem(key)
+    * 3.Length 获取当前指定Storage的长度
+    * 4.key(n)返回指定的Storage的第n条数据 n从0开始
+    * 5.removeItem(key)
+    * 6.clear() 清空指定的Storage的所有的内容
+    *
+    * */
+    sessionStorage.setItem('uuname','divv');
+    sessionStorage.setItem('uname','divvgdfhzfd');
+    console.log(sessionStorage.getItem('uuname'));
+    console.log(sessionStorage.length);
+    console.log(sessionStorage.key(0));//uname
+    console.log(sessionStorage.key(1));//uuname
+function next() {
+    window.location = 'http://127.0.0.1:9999/test.html';
+}
+
+</script>
+</body>
+</html>

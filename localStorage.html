@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML5 本地local存储</title>
+</head>
+<body>
+<script type="text/javascript">
+    //可以存储对象
+   localStorage.setItem('uuname','span');
+   localStorage.setItem('datas',JSON.stringify({msg:'这是一个json对象',data:['1',2,3]}));
+   console.log(localStorage.getItem('datas'));
+   console.log(JSON.parse(localStorage.getItem('datas')));
+   //本地串 用来存储20条左右的数据,可以在用户进行刷新或者加载数据的时候,可以根据服务器端请求来的数据来和local数据进行比较.
+    //如果相同,则不进行刷新,如果不同则刷新数据
+</script>
+</body>
+</html>
